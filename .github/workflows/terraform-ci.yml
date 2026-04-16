@@ -29,3 +29,9 @@ jobs:
 
       - name: Terraform validate
         run: terraform validate
+      - name: Run Checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: terraform
+          quiet: true
+          soft_fail: false
