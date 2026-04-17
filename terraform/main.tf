@@ -13,10 +13,12 @@ provider "aws" {
   region = "us-east-1"
 }
 
+
+resource "aws_s3_bucket" "log_bucket" {
 #checkov:skip=CKV2_AWS_62: Event notifications are not required for this dedicated access log bucket
 #checkov:skip=CKV2_AWS_61: Lifecycle configuration is not required for this dedicated access log bucket in this training lab
 #checkov:skip=CKV_AWS_144: Cross-region replication is not required for this non-production access log bucket
-resource "aws_s3_bucket" "log_bucket" {
+
   bucket = "marquis-devsecops-logs-123456"
 }
 
@@ -78,10 +80,12 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "encryption" {
   }
 }
 
-#checkov:skip=CKV2_AWS_62: Event notifications are not required for this training bucket
-#checkov:skip=CKV2_AWS_61: Lifecycle configuration is not required for this non-production training bucket
-#checkov:skip=CKV_AWS_144: Cross-region replication is not required for this non-production training bucket
+
 resource "aws_s3_bucket_logging" "secure_bucket_logging" {
+#checkov:skip=CKV2_AWS_62: Event notifications are not required for this dedicated access log bucket
+#checkov:skip=CKV2_AWS_61: Lifecycle configuration is not required for this dedicated access log bucket in this training lab
+#checkov:skip=CKV_AWS_144: Cross-region replication is not required for this non-production access log bucket
+
   bucket        = aws_s3_bucket.secure_bucket.id
   target_bucket = aws_s3_bucket.log_bucket.id
   target_prefix = "access-logs/"
